@@ -1,0 +1,4 @@
+D:/git/refactor-service-test/test/junit
+redis-server.exe redis.windows.conf
+celery  -A backend worker  -l debug -P eventlet
+

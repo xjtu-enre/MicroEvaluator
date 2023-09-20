@@ -72,8 +72,9 @@
                 <div class="progress-info">
                   <div class="progress-percentage">
                       <span class="text-xs font-weight-bold"
-                      >100%
-                        <!--                        {{ this.progress }}%-->
+                      >100% 
+                        <!--this.progress不更新状态，请求传回的值一直是0-->
+                        <!-- {{ this.progress }}%--> 
                       </span>
                   </div>
                 </div>
@@ -170,6 +171,7 @@ export default {
     },
     updateProcess(process) {
       this.progress = process
+      console.log('updateproces',process)
     },
     getColor(process) {
       if (process == 100) {

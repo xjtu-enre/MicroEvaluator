@@ -43,11 +43,11 @@ const convert = function (count, data) {
 
 export const drawmChart = function (temp, params) {
   // TODO bootstrap的popover
-  const tooltip = d3
+  const mtooltip = d3
     .select('body')
     .selectAll('#mchart')
     .append('div')
-    .attr('class', 'tooltip')
+    .attr('class', 'mtooltip')
     .style('text-align', 'center')
     .style('display', 'block')
     .style('position', 'absolute')
@@ -66,9 +66,10 @@ export const drawmChart = function (temp, params) {
   const canvas = d3
     .select('#mchart')
     .append('canvas')
-    .attr('id', 'canvas')
+    .attr('id', 'mcanvas')//id改为mcanvas，避免后续通过id触发组件函数时与另一个图冲突。
     .attr('width', width)
     .attr('height', height);
+  console.log('mcanvas node:',canvas.node())
   const context = canvas.node().getContext('2d');
   context.clearRect(0, 0, width, height);
   const hiddenCanvas = d3
@@ -394,7 +395,7 @@ export const drawmChart = function (temp, params) {
       zoomToCanvas(node);
     } //if -> node
   };
-  document.getElementById('canvas').addEventListener('click', clickFunction);
+  document.getElementById('mcanvas').addEventListener('click', clickFunction);
 
   // 鼠标移动事件
   let nodeOld = root;
@@ -405,7 +406,7 @@ export const drawmChart = function (temp, params) {
     //Our map uses these rgb strings as keys to nodes.
     const colString = 'rgb(' + col[0] + ',' + col[1] + ',' + col[2] + ')';
     let node = colToCircle[colString];
-    tooltip.style('opacity', 0);
+    mtooltip.style('opacity', 0);
     if (node !== nodeOld) {
       if (node) {
         if (node.depth !== 0) {
@@ -413,8 +414,8 @@ export const drawmChart = function (temp, params) {
               nodeY = (node.y - zoomInfo.centerY) * zoomInfo.scale + centerY,
               nodeR = node.r * zoomInfo.scale;
           //Position the wrapper right above the circle
-          // $("[data-toggle='popover']").tooltip('show');
-          tooltip
+          // $("[data-toggle='popover']").mtooltip('show');
+          mtooltip
               .style('opacity', '1')
               .style('top', nodeY - nodeR)
               .style('left', nodeX + (padding * 5) / 4)
@@ -423,7 +424,7 @@ export const drawmChart = function (temp, params) {
       } //if -> node
     }
   };
-  document.getElementById('canvas').addEventListener('mousemove', mousemoveFunction);
+  document.getElementById('mcanvas').addEventListener('mousemove', mousemoveFunction);
 
   // zoom事件
 
@@ -434,7 +435,7 @@ export const drawmChart = function (temp, params) {
     vOld = [focus.x, focus.y, focus.r * 2.05];
 
   function zoomToCanvas(focusNode) {
-    $('#canvas').css('pointer-events', 'none');
+    $('#mcanvas').css('pointer-events', 'none');
     //Remove all previous popovers - if present
     // $('.popoverWrapper').remove();
     // $('.popover').each(function () {
@@ -497,7 +498,7 @@ export const drawmChart = function (temp, params) {
       textAlpha = ease(timeElapsed / fadeTextDuration);
       if (timeElapsed >= fadeTextDuration) {
         //Enable click & mouseover events again
-        $('#canvas').css('pointer-events', 'auto');
+        $('#mcanvas').css('pointer-events', 'auto');
 
         fadeText = false; //Jump from loop after fade in is done
         stopTimer = true; //After the fade is done, stop with the redraws / animation

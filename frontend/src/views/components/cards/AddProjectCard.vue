@@ -56,7 +56,7 @@
               <material-input
                   id="ver"
                   type="text"
-                  label="please input version"
+                  label="please input versions, each version must be connected with ';'"
                   name="ver"
                   size="lg"
                   @input="project.ver=$event.target.value"
@@ -142,7 +142,7 @@ export default {
       handler(newValue, oldValue) {
         console.log(newValue)
         console.log(oldValue)
-        this.$emit('process-update')
+        this.$emit('process-update',newValue)//尝试带参数process，this.$emit('process-update',this.process)但无用
       }
     }
   }

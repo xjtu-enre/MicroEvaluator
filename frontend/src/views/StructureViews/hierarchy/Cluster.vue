@@ -71,6 +71,9 @@ export default {
     getClusterDatasList().then((res) => {
       console.log('cluster', res.data.result[0])
       drawLegend();
+      //node2会undefined报错。
+      if(this.node2){ console.log(this.node2)
+      }else this.node2={}
       drawCluster(res.data.result[0], this.node2);
     });
     // this.drawSvg()

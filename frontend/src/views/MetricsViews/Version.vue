@@ -115,6 +115,7 @@ export default {
       if (response.status == 200) {
         debugger
         var data = JSON.parse(response.data);
+        console.log('data',data)
         this.linedata = data.linedata
         // this.mapdata = data.hotmapdata
         this.isshow = true

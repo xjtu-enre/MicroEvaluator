@@ -58,7 +58,7 @@ def get_line_data(request):
     module_metrics = list()
     module_metrics.append('score')
     result['linedata'] = np.array(
-        pd.read_csv(r'C:\Users\20465\Desktop\codes\MicroEvaluator\backend\evaluator/linedata.csv', header=None)).tolist()
+        pd.read_csv(r'E:\度量\tools\MicroEvaluator-main\backend\evaluator/linedata.csv', header=None)).tolist()
 
     json_str = json.dumps(result, ensure_ascii=False)
     return JsonResponse(json_str, safe=False)
@@ -66,7 +66,7 @@ def get_line_data(request):
 
 def get_metric_data(request):
     result = dict()
-    metricdata = pd.read_json(r"C:\Users\20465\Desktop\codes\MicroEvaluator\backend\evaluator/metricdata.json", encoding="utf-8",
+    metricdata = pd.read_json(r"E:\度量\tools\MicroEvaluator-main\backend\evaluator/metricdata.json", encoding="utf-8",
                               orient='records')
     # metricdata = pd.read_csv(r'E:\MicroEvaluator\backend\evaluator/metricdata.csv', header=None)
     metricdata = metricdata[list(metricdata.keys())[0]]
@@ -143,7 +143,7 @@ def get_column_data(metricdata):
 
 def get_tree_data(request):
     result = dict()
-    metricdata = pd.read_json(r"C:\Users\20465\Desktop\codes\MicroEvaluator\backend\evaluator/metrictree.json", encoding="utf-8",
+    metricdata = pd.read_json(r"E:\度量\tools\MicroEvaluator-main\backend\evaluator/metrictree.json", encoding="utf-8",
                               orient='records')
     metricdata = metricdata[list(metricdata.keys())[0]]
     module_data = metricdata['modules']
@@ -412,7 +412,7 @@ def get_scatter_data():
     #     csv_reader = csv.reader(f)
     #     for line in csv_reader:
     #         res.append([line[0], line[1], line[2]])
-    data = pd.read_csv(r'C:\Users\20465\Desktop\codes\MicroEvaluator\backend\evaluator/score.csv', header=None)
+    data = pd.read_csv(r'E:\度量\tools\MicroEvaluator-main\backend\evaluator/score.csv', header=None)
     # 必须添加header=None，否则默认把第一行数据处理成列名导致缺失
     res = data.values.tolist()
     loc_level = get_level([i[1] for i in res], 'loc')
@@ -449,7 +449,7 @@ def get_r(level):
 # 取基于最新两个版本的演化数据
 def get_hotmap_data(request):
     result = dict()
-    trend_data = pd.read_excel(r'C:\Users\20465\Desktop\codes\MicroEvaluator\backend\evaluator/diff_result.xlsx',
+    trend_data = pd.read_excel(r'E:\度量\tools\MicroEvaluator-main\backend\evaluator/diff_result.xlsx',
                                sheet_name='trend', engine='openpyxl')
     metrics = list(trend_data)
     metrics.remove('module_name')
@@ -470,7 +470,7 @@ def get_cause_entities(request):
     result = dict()
     methods = list()
     id = 0
-    methods = pd.read_csv(r'C:\Users\20465\Desktop\codes\MicroEvaluator\backend\evaluator/methods.csv', header=None)
+    methods = pd.read_csv(r'E:\度量\tools\MicroEvaluator-main\backend\evaluator/methods.csv', header=None)
     method_res = list()
     for index, row in methods.iterrows():
         if index == 0:

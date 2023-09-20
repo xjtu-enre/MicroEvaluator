@@ -48,13 +48,13 @@ def measure_package_metrics(dep_path, cmt_path, result_path, version_id, version
         project_metric = dict(zip(PROJECT_METRICS, tmp_pro))
         project_metric['modules'] = module_dic
         project_dic[version] = project_metric
-        ver = VersionProject.objects.filter(id=version_id).first().version
+        ver = version
         write_result_to_json('./featureextractor/data/' + project_name + '/' + ver + '/measure_result.json', project_dic)
         # 项目级数据入库
         save_project_to_db(module_data, version_id, module_dic, project_dic)
 
 
-def compare_diff(folder_path1, folder_path2, mapping, output):
+def compare_diff(folder_path1, ver1,folder_path2,ver2, mapping, output):
     measure_json_dict1, dep_json_dict1 = read_folder(folder_path1, 'measure_result.json', 'dep.json')
     measure_json_dict2, dep_json_dict2 = read_folder(folder_path2, 'measure_result.json', 'dep.json')
     if mapping:
@@ -69,17 +69,23 @@ def compare_diff(folder_path1, folder_path2, mapping, output):
     dep_diff = dict()
     metric_change = list()
     modules_name = list()
-    _get_measure_diff(measure_json_dict1, measure_json_dict2, measure_diff, modules_name, metric_change)
+    print('measure_json_dict1_len:' + str(len(measure_json_dict1)))
+    print('measure_json_dict2_len:' + str(len(measure_json_dict2)))
+    _get_measure_diff(measure_json_dict1,ver1, measure_json_dict2,ver2, measure_diff, modules_name, metric_change)
+    print('metric_change_len:'+str(len(metric_change)))
     _get_dep_diff(dep_json_dict1, dep_json_dict2, dep_diff)
-    write_result_to_json(create_file_path(output + '\\diffResult', 'measure_diff.json'), measure_diff)
-    write_result_to_json(create_file_path(output + '\\diffResult', 'dep_diff.json'), dep_diff)
-    gen_xlsx(create_file_path(output + '\\diffResult', 'diff_result.xlsx'), metric_change, modules_name, measure_diff)
+    write_result_to_json(create_file_path(output + '/diffResult', 'measure_diff.json'), measure_diff)
+    write_result_to_json(create_file_path(output + '/diffResult', 'dep_diff.json'), dep_diff)
+    gen_xlsx(create_file_path(output + '/diffResult', 'diff_result.xlsx'), metric_change, modules_name, measure_diff)
     return measure_diff
 
 
-def _get_measure_diff(measure_json_dict1, measure_json_dict2, measure_diff, modules_name, metric_change):
-    module2_info = measure_json_dict2
-    module1_info = measure_json_dict1
+def _get_measure_diff(measure_json_dict1,ver1, measure_json_dict2,ver2, measure_diff, modules_name, metric_change):
+    # print(measure_json_dict2[ver2])
+    module2_info = measure_json_dict2[ver2]['modules']
+    print('module2_info:'+str(len(module2_info)))
+    module1_info = measure_json_dict1[ver1]['modules']
+    print('module2_info:'+str(len(module1_info)))
     for module_name in module2_info:
         if module_name in module1_info:
             module_result1 = module1_info[module_name]
@@ -123,6 +129,7 @@ def _get_measure_diff(measure_json_dict1, measure_json_dict2, measure_diff, modu
                     classes[class_name]['status'] = 'delete'
 
             measure_diff[module_name]['classes'] = classes
+    print('metric_change_len_infunc:'+str(len(metric_change)))
 
 
 def _diff_value(list1, list2):

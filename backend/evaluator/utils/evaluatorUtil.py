@@ -32,10 +32,10 @@ def post_evaluator_data(project_name, version_info, ismicro):
                                     project_dic, project_name)
     write_result_to_json('./featureextractor/data/' + project_name + '/measure_result.json', project_dic)
 
-    # # # 最新两个版本求diff，用来画热力图
-    # compare_diff('./featureextractor/data/' + project_name + '/' + vers[0],
-    #              './featureextractor/data/' + project_name + '/' + vers[1], dict(),
-    #              './featureextractor/data/' + project_name)
+    # 最新两个版本求diff，用来画热力图
+    compare_diff('./featureextractor/data/' + project_name + '/' + vers[0],vers[0],
+                 './featureextractor/data/' + project_name + '/' + vers[1],vers[1], dict(),
+                 './featureextractor/data/' + project_name)
     # # 根因定位
     # analyse_data('./featureextractor/data/diffResult', './featureextractor/data/' + project_name, 'notaosp')
 

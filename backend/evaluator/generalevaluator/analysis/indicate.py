@@ -13,7 +13,9 @@ def gen_xlsx(file_path, metric_change, modules_name, result):
 
 def _gen_change_sheet(workbook, bold, metric_change, modules_name):
     worksheet1 = workbook.add_worksheet('变化幅度')
-    headings1 = ["module_name", "scoh", "scop", "odd", "idd", "DSM"]
+    # headings1 = ["module_name", "scoh", "scop", "odd", "idd", "DSM"]
+    headings1 = ["module_name", "scoh", "scop", "odd", "idd", "spread", "focus", "icf", "ecf", "rei", "chm", "chd",
+                 "DSM"]
     worksheet1.write_row('A1', headings1, bold)
     for index1 in range(0, len(metric_change)):
         worksheet1.write_string('A' + str(index1 + 2), modules_name[index1])
@@ -25,7 +27,7 @@ def _gen_hotmap_sheet(workbook, bold, metric_change, modules_name):
     worksheet1 = workbook.add_worksheet('演化趋势')
     headings1 = ["module_name", "scoh", "scop", "odd", "idd", "DSC"]
     worksheet1.write_row('A1', headings1, bold)
-
+    #这里metric_change长度为零，max和min获取不到数据报错
     max = np.amax(metric_change, axis=0)
     min = np.amin(metric_change, axis=0)
     for index1 in range(0, len(metric_change)):

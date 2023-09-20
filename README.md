@@ -23,7 +23,7 @@
 4. 启动前台
 
    ```
-   npm run dev
+   npm run dev // npm run serve
    ```
 
    
